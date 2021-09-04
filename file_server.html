@@ -10,10 +10,12 @@
   <title>Remote Finder</title>
 </head>
 
-
 <body>
   <section class="main">
-    <div id="finder" class="container" style="top: 4rem; left: 4rem; bottom: 4rem; right: 4rem; width: auto;">
+    <div id="finder" class="container" style="
+      top: 4rem; left: 4rem; bottom: 4rem; right: 4rem; width: auto;
+      box-shadow: 2px 12px 25px 10px #d1d1d1;  
+    ">
       <div class="header">
         <div class="headerTop">
           <div class="headerIconsLeft">
@@ -82,44 +84,72 @@
       </div>
       <div class="space">
         <div class="spaceIcon">
-          <img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
-          <p class="spaceTitle">Assets</p>
-        </div>
-        <div class="spaceIcon">
           <div class="spaceIcons" style="position: relative;">
             <img src="assets/svg/file.svg" alt="document applications" class="spaceIcons">
             <span
-              style="position: absolute; width: 5rem; left: 0; bottom: 3px; color: #808080; text-align: center;">.hs</span>
+              style="position: absolute; width: 5rem; left: 0; bottom: 3px; color: #808080; text-align: center;">New</span>
           </div>
-          <p class="spaceTitle">main.hs</p>
+          <p class="spaceTitle">新建文件</p>
         </div>
-
         <template name=folder>
-          <div class="spaceIcon">
-            <img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
-            <p class="spaceTitle">{folderName}</p>
-          </div>
+          <a href={folderName} style="text-decoration: none; color:black;">
+            <div class="spaceIcon">
+              <img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
+              <p class="spaceTitle">{folderName}</p>
+            </div>
+          </a>
+
         </template>
 
-        
+        <template name=file>
+          <a href={filename} style="text-decoration: none; color:black;">
+            <div class="spaceIcon">
+              <div class="spaceIcons" style="position: relative;">
+                <img src="assets/svg/file.svg" alt="document applications" class="spaceIcons">
+                <span
+                  style="position: absolute; width: 5rem; left: 0; bottom: 3px; color: #808080; text-align: center;">{fileType}</span>
+              </div>
+              <p class="spaceTitle">{filename}</p>
+            </div>
+          </a>
+        </template>
       </div>
 
-      <script>
 
-        // 👇 Definition -------------------------------
-
-        const template = Template("folder")
-        const context = [
-          { folderName: "Scripts" },
-          { folderName: "Assets" },
-          { folderName: "Resources" }
-        ]
-
-        template.bind(context)
-
-      </script>
     </div>
   </section>
+
+
+  <script>
+    const folderTemplate = Template("folder")
+    const folderContext = [
+      { folderName: ".." },
+      { folderName: "Scripts" },
+      { folderName: "Assets" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+      { folderName: "Resources" },
+    ]
+    folderTemplate.bind(folderContext)
+
+
+    const fileTemplate = Template("file")
+    const fileContext = [
+      { filename: "index.html", fileType: "HTML" },
+      { filename: "Readme.md", fileType: "MD" },
+      { filename: "main.c", fileType: "C" },
+      { filename: "main.c", fileType: "C" },
+      { filename: "main.c", fileType: "C" }
+    ]
+    fileTemplate.bind(fileContext)
+
+  </script>
 </body>
 
 </html>
