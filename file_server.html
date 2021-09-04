@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <link href="assets/css/desktop.css" rel="stylesheet">
+  <script src=//unpkg.com/snuggsi></script>
+  <title>Remote Finder</title>
+</head>
+
+
+<body>
+  <section class="main">
+    <div id="finder" class="container" style="top: 4rem; left: 4rem; bottom: 4rem; right: 4rem; width: auto;">
+      <div class="header">
+        <div class="headerTop">
+          <div class="headerIconsLeft">
+            <div class="headerIconClose" is-click="class:add('hide', '#finder')"><img src="assets/svg/close.svg"
+                alt="close" class="imgHeader"></div>
+            <div class="headerIconMinimize"><img src="assets/svg/minimize.svg" alt="minimize" class="imgHeader"></div>
+            <div class="headerIconOpen"><img src="assets/svg/expand.svg" alt="expand" class="imgHeader"></div>
+          </div>
+          <div class="headerTitle">
+            <img src="assets/svg/folder-blue.svg" alt="folder blue" class="header_IconTitle">
+            <p class="header_TextTitle">{current_folder}</p>
+          </div>
+        </div>
+        <div class="navbar">
+          <div class="arrows">
+            <img class="iconArrow" src="assets/svg/left-arrow.svg" alt="left arrow">
+            <img class="iconArrow" src="assets/svg/right-arrow.svg" alt="right arrow">
+          </div>
+          <div class="navbarPanel">
+            <div class="navbarPanelLeft">
+              <img class="iconPanelLeft active" src="assets/svg/panel_1.svg" alt="cuadricula">
+              <img class="iconPanelLeft" src="assets/svg/panel_2.svg" alt="line">
+              <img class="iconPanelLeft" src="assets/svg/panel_3.svg" alt="view">
+              <img class="iconPanelLeft final" src="assets/svg/panel_4.svg" alt="3d">
+            </div>
+            <div class="navbarPanelRight">
+              <img class="iconPanelRight" src="assets/svg/panel_5.svg" alt="list">
+              <img class="iconPanelRight" src="assets/svg/panel_6.svg" alt="options">
+              <img class="iconPanelRight" src="assets/svg/panel_7.svg" alt="upload">
+              <img class="iconPanelRight" src="assets/svg/panel_8.svg" alt="tag">
+            </div>
+          </div>
+          <div class="navbarSearch" style="max-width: 250px;">
+            <img src="assets/svg/lupa.svg" alt="lupa" class="iconSearch">
+            <input type="text" name="name" class="navbarSearchText" placeholder="Search" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <div class="sidebarSection">
+          <p class="sidebarTitle">Favorites</p>
+          <div class="sidebarGroup"><img src="assets/svg/app-store.svg" alt="applications"
+              class="sidebarIcons">Applications<p class="sidebarName"></p>
+          </div>
+          <div class="sidebarGroup"><img src="assets/svg/home.svg" alt="user" class="sidebarIcons">Home<p
+              class="sidebarName"></p>
+          </div>
+          <div class="sidebarGroup"><img src="assets/svg/folder.svg" alt="folder cloud" class="sidebarIcons">Cloud<p
+              class="sidebarName"></p>
+          </div>
+          <div class="sidebarGroup"><img src="assets/img/desktop.png" alt="desktop" class="sidebarIcons">Desktop<p
+              class="sidebarName"></p>
+          </div>
+          <div class="sidebarGroup"><img src="assets/svg/download.svg" alt="folder donwload"
+              class="sidebarIcons">Download
+            <p class="sidebarName"></p>
+          </div>
+        </div>
+        <div class="sidebarSection">
+          <p class="sidebarTitle">Devices</p>
+          <div class="sidebarGroup">
+            <img src="assets/svg/laptop.svg" alt="device" class="sidebarIcons">
+            <p class="sidebarName">Remote MacBoo...</p>
+          </div>
+        </div>
+      </div>
+      <div class="space">
+        <div class="spaceIcon">
+          <img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
+          <p class="spaceTitle">Assets</p>
+        </div>
+        <div class="spaceIcon">
+          <div class="spaceIcons" style="position: relative;">
+            <img src="assets/svg/file.svg" alt="document applications" class="spaceIcons">
+            <span
+              style="position: absolute; width: 5rem; left: 0; bottom: 3px; color: #808080; text-align: center;">.hs</span>
+          </div>
+          <p class="spaceTitle">main.hs</p>
+        </div>
+
+        <template name=folder>
+          <div class="spaceIcon">
+            <img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
+            <p class="spaceTitle">{folderName}</p>
+          </div>
+        </template>
+
+        
+      </div>
+
+      <script>
+
+        // 👇 Definition -------------------------------
+
+        const template = Template("folder")
+        const context = [
+          { folderName: "Scripts" },
+          { folderName: "Assets" },
+          { folderName: "Resources" }
+        ]
+
+        template.bind(context)
+
+      </script>
+    </div>
+  </section>
+</body>
+
+</html>

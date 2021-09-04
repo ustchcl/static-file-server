@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+
+<body>
+  <template name=developer>
+    <!-- `{nickname}` will bind to `context` property `nickname` -->
+    <h1>{nickname}</h1>
+  </template>
+
+  <script src=//unpkg.com/snuggsi></script>
+  <script>
+
+    const template = Template("developer");
+    const context = { nickname: 'That Beast' }
+
+    template.bind(context)
+
+  </script>
+</body>
+
+</html>
