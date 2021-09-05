@@ -33,7 +33,7 @@ let default_config () : config =
     delete = false;
     upload = false;
     max_upload_size = 10 * 1024 * 1024;
-    auto_index_html = true;
+    auto_index_html = false;
     j = 32;
   }
 
@@ -209,8 +209,8 @@ let html_list_dir ~top ~parent d : string =
           </div>
           <div class="navbar">
             <div class="arrows">
-              <img class="iconArrow" src="/assets/svg/left-arrow.svg" alt="left arrow">
-              <img class="iconArrow" src="/assets/svg/right-arrow.svg" alt="right arrow">
+              <img class="iconArrow" src="/assets/svg/left-arrow.svg" alt="left arrow" onclick="window.history.back()">
+              <img class="iconArrow" src="/assets/svg/right-arrow.svg" alt="right arrow" onclick="window.history.forward()">
             </div>
             <div class="navbarPanel">
               <div class="navbarPanelLeft">
