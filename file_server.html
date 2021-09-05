@@ -8,6 +8,32 @@
   <link href="assets/css/desktop.css" rel="stylesheet">
   <script src=//unpkg.com/snuggsi></script>
   <title>Remote Finder</title>
+
+  <script>
+    function newFile(e) {
+      console.log("new file")
+      var input = document.getElementById("newFileInput");
+      input.click();
+    }
+    function upload(input) {
+      console.log("upload")
+      console.log(input)
+
+      var files = Array.from(input.files)
+      if (files === null || files === undefined) {
+        files = []
+      }
+      const fileTemplate = Template("uploading")
+      var makeStyle = x => `width: ${x}%; height: 8px; border-radius: 10px; margin: 1px; background-color: cornsilk;`
+      const fileContext = files.map(x => ({
+        filename: x.name,
+        fileType: x.name.substring(2, 5),
+        styleString: makeStyle(30)
+      }))
+      fileTemplate.bind(fileContext)
+
+    }
+  </script>
 </head>
 
 <body>
@@ -83,24 +109,34 @@
         </div>
       </div>
       <div class="space">
-        <div class="spaceIcon">
+        <div class="spaceIcon" onclick="newFile()">
           <div class="spaceIcons" style="position: relative;">
             <img src="assets/svg/file.svg" alt="document applications" class="spaceIcons">
             <span
               style="position: absolute; width: 5rem; left: 0; bottom: 3px; color: #808080; text-align: center;">New</span>
           </div>
           <p class="spaceTitle">新建文件</p>
+          <input type="file" style="display: none;" id="newFileInput" onchange="upload(this)" />
         </div>
-        <template name=folder>
-          <a href={folderName} style="text-decoration: none; color:black;">
-            <div class="spaceIcon">
-              <img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
-              <p class="spaceTitle">{folderName}</p>
+        <template name=uploading>
+          <div class="spaceIcon">
+            <div class="spaceIcons" style="position: relative;">
+              <img src="assets/svg/file.svg" alt="document applications" class="spaceIcons">
+              <span
+                style="position: absolute; width: 5rem; left: 0; bottom: 3px; color: #808080; text-align: center;">{fileType}</span>
+              <div style="position: absolute; bottom: 30px; left: 15px; width: 50px; height: 10px; border: 1px solid bl#b5b5b5; border-radius: 10px; background-color: #d1d1d1;">
+                <div style={styleString}></div>
+              </div>
             </div>
-          </a>
-
+            <p class="spaceTitle">{filename}</p>
+          </div>
         </template>
-
+        <template name=folder>
+          <div class="spaceIcon">
+            <img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
+            <p class="spaceTitle">{folderName}</p>
+          </div>
+        </template>
         <template name=file>
           <a href={filename} style="text-decoration: none; color:black;">
             <div class="spaceIcon">
@@ -114,40 +150,38 @@
           </a>
         </template>
       </div>
-
-
     </div>
   </section>
 
 
   <script>
-    const folderTemplate = Template("folder")
-    const folderContext = [
-      { folderName: ".." },
-      { folderName: "Scripts" },
-      { folderName: "Assets" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-      { folderName: "Resources" },
-    ]
-    folderTemplate.bind(folderContext)
+      const folderTemplate = Template("folder")
+      const folderContext = [
+        { folderName: ".." },
+        { folderName: "Scripts" },
+        { folderName: "Assets" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+        { folderName: "Resources" },
+      ]
+      folderTemplate.bind(folderContext)
 
 
-    const fileTemplate = Template("file")
-    const fileContext = [
-      { filename: "index.html", fileType: "HTML" },
-      { filename: "Readme.md", fileType: "MD" },
-      { filename: "main.c", fileType: "C" },
-      { filename: "main.c", fileType: "C" },
-      { filename: "main.c", fileType: "C" }
-    ]
-    fileTemplate.bind(fileContext)
+      const fileTemplate = Template("file")
+      const fileContext = [
+        { filename: "index.html", fileType: "HTML" },
+        { filename: "Readme.md", fileType: "MD" },
+        { filename: "main.c", fileType: "C" },
+        { filename: "main.c", fileType: "C" },
+        { filename: "main.c", fileType: "C" }
+      ]
+      fileTemplate.bind(fileContext)
 
   </script>
 </body>
