@@ -459,9 +459,9 @@ body {
 }
 .main .container .header .navbar {
   display: grid;
-  grid-template-columns: 0.4fr 2fr 1fr;
+  grid-template-columns: 0.5fr 1.5fr 0.5fr;
   grid-template-rows: 0.8fr;
-  padding: 0.5rem;
+  padding: 0.5rem 0;
 }
 .main .container .header .navbar .arrows {
   display: flex;
@@ -574,6 +574,7 @@ body {
   width: calc(100% - 2rem);
   border-radius: 0 0 0.5rem 0;
   overflow-y: auto;
+  align-content: flex-start;
 }
 .main .container .space .spaceIcon {
   display: flex;
