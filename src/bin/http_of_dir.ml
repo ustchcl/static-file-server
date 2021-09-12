@@ -67,7 +67,7 @@ let decode_path s = match U.percent_decode s with Some s -> s | None -> s
 
 let is_hidden s = String.length s > 0 && s.[0] = '.'
 
-let html_list_dir ~top ~parent d : string =
+let html_list_dir_pc ~top ~parent d : string =
   let entries = Sys.readdir @@ (top // d) in
   Array.sort compare entries;
   let body = Buffer.create 256 in
@@ -335,6 +335,57 @@ let html_list_dir ~top ~parent d : string =
 
   Buffer.contents body
 
+let html_list_dir_mobile ~top ~parent d : string =
+  let entries = Sys.readdir @@ (top // d) in
+  Array.sort compare entries;
+  let body = Buffer.create 256 in
+  (* TODO: breadcrumbs for the path, each element a link to the given ancestor dir *)
+  Printf.bprintf body
+    {|<head><title> http_of_dir %S</title><meta charset="utf-8">
+    </head><body>
+      <h2> Index of %S</h2>
+    |}
+    top d;
+  (match parent with
+  | None -> ()
+  | Some p ->
+      Printf.bprintf body "<a href=\"/%s\"> (parent directory) </a>\n"
+        (encode_path p));
+  Printf.bprintf body "<ul>\n";
+  let hidden_stop = ref 0 in
+  Array.iteri
+    (fun i f ->
+      if is_hidden f && (i = 0 || not (is_hidden entries.(i - 1))) then (
+        hidden_stop := i;
+        while
+          !hidden_stop < Array.length entries
+          && is_hidden entries.(!hidden_stop)
+        do
+          incr hidden_stop
+        done;
+        Printf.bprintf body "<details> <summary>(%d hidden files)</summary>\n"
+          (!hidden_stop - i))
+      else if i = !hidden_stop then Printf.bprintf body "</details/>\n";
+      if not @@ contains_dot_dot (d // f) then
+        let fpath = top // d // f in
+        if not @@ Sys.file_exists fpath then
+          Printf.bprintf body "  <li> %s [invalid file]</li>\n" f
+        else
+          let size =
+            try
+              Printf.sprintf " (%s)"
+              @@ human_size (Unix.stat fpath).Unix.st_size
+            with _ -> ""
+          in
+          Printf.bprintf body "  <li> <a href=\"/%s\"> %s </a> %s%s </li>\n"
+            (encode_path (d // f))
+            f
+            (if Sys.is_directory fpath then "[dir]" else "")
+            size)
+    entries;
+  Printf.bprintf body "</ul></body>\n";
+  Buffer.contents body
+
 let finally_ ~h x f =
   try
     let y = f x in
@@ -434,7 +485,22 @@ let serve ~config (dir : string) : _ result =
           S.Response.make_raw ~code:301 ""
             ~headers:S.Headers.(empty |> set "location" new_path))
         else
-          let body = html_list_dir ~top:dir path ~parent in
+          let uaparser = User_agent_parser.init () in
+          let user_agent = S.Request.get_header req "user-agent" in
+          let body =
+            match user_agent with
+            | None -> html_list_dir_mobile ~top:dir path ~parent
+            | Some ua ->
+                let parsed = User_agent_parser.parse uaparser ua in
+                let start_with frag str =
+                  let l = String.length frag in
+                  String.length str >= l && String.sub str 0 l = frag
+                in
+                print_endline parsed.os.family;
+                if start_with parsed.os.family "Windows" then
+                  html_list_dir_pc ~top:dir path ~parent
+                else html_list_dir_mobile ~top:dir path ~parent
+          in
           S.Response.make_string
             ~headers:[ header_html; ("ETag", Lazy.force mtime) ]
             (Ok body))
